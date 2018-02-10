@@ -1,0 +1,59 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: ivancherniy
+ * Date: 09.02.2018
+ * Time: 23:12
+ */
+
+namespace App\Admin\Controllers;
+
+
+use App\Admin\Extensions\ViewRig;
+use App\Models\Rig;
+use Encore\Admin\Grid;
+use Encore\Admin\Layout\Content;
+
+class RigController
+{
+    public function index()
+    {
+        return \Admin::content(function (Content $content) {
+            $content->header('Rig control');
+            $content->body($this->grid());
+        });
+    }
+
+    public function view($id)
+    {
+        return \Admin::content(function (Content $content) use ($id) {
+            $content->header('Rig');
+            $content->breadcrumb(
+                ['text' => 'Rigs', 'url' => '/rig'],
+                ['text' => 'Rig', 'url' => '/rig/view/' . $id]
+            );
+        });
+    }
+
+    protected function grid()
+    {
+        return \Admin::grid(Rig::class, function (Grid $grid) {
+            $grid->disableCreateButton();
+            $grid->actions(function ($actions) {
+                $actions->disableDelete();
+                $actions->disableEdit();
+                $actions->append(new ViewRig($actions->getKey()));
+            });
+            $grid->tools(function ($tools) {
+                $tools->batch(function ($batch) {
+                    $batch->disableDelete();
+                });
+            });
+            $grid->column('name')->sortable();
+            $grid->column('address')->sortable();
+            $grid->active('Active')->display(function ($active) {
+                return $active ? '<i style="color:green;" class="fa fa-check"></i>' : '<i style="color:red;" class="fa fa-close"></i>';
+            })->sortable();
+        });
+    }
+}
