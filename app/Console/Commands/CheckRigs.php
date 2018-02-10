@@ -64,7 +64,7 @@ class CheckRigs extends Command
                     true
                 );
                 
-                if (empty($stats['active'])) {
+                if (empty($stats['alive'])) {
                     throw new \Exception('Rig is dead.');
                 }
 
