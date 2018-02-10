@@ -3,7 +3,9 @@
 namespace App\Console\Commands;
 
 use App\Models\Rig;
+use App\Models\Videocard;
 use Illuminate\Console\Command;
+use GuzzleHttp\Client;
 
 class CheckRigs extends Command
 {
@@ -46,17 +48,48 @@ class CheckRigs extends Command
 
         $this->info('Found ' . $rig->count() . ' rig(s).Starting to check.');
 
+        $httpClient = new Client();
         /** @var Rig $item */
         foreach ($rig as $item) {
-            $videocards = $item->videocards();
-            $videocardsCount = $videocards->count();
+            try {
+                $response = $httpClient->get(
+                    'http://' . $item->getAttribute('address') . '/check-alive'
+                );
 
-            if (!$videocardsCount) {
-                $this->warn('There are no videocards found. Skipping.');
+                $stats = @\GuzzleHttp\json_decode(
+                    $response->getBody()->getContents(),
+                    true
+                );
+                
+                if (empty($stats['active'])) {
+                    throw new \Exception('Rig is dead.');
+                }
+
+                if (!empty($stats['result'])) {
+                    $cardsToAdd = [];
+                    foreach ($stats['result'] as $cardId => $stat) {
+                        $videocard = Videocard::findOrCreate($rig->getKey(), $cardId);
+                        $videocard->setRawAttributes([
+                            'name'              => $stat['name'] ?? 'Unnamed Videocard',
+                            'id_on_rig'         => $cardId,
+                            'fan_speed'         => $stat['fan_speed'] ?? 0,
+                            'power_limit'       => $stat['power_limit'] ?? 0,
+                            'temperature'       => $stat['temperature'] ?? 0,
+                            'memory_overclock'  => $stat['memory_overclock'] ?? 0,
+                            'core_overclock'    => $stat['core_overclock'] ?? 0,
+                        ]);
+                        $cardsToAdd[] = $videocard;
+                    }
+                    $rig->videocards()
+                        ->saveMany($cardsToAdd);
+                }
+            } catch (\Throwable $e) {
+                $item
+                    ->setAttribute('active', false)
+                    ->save();
+                \Log::error($e->getMessage(), $e->getTrace());
                 continue;
             }
-
-            $this->info("Found {$videocardsCount} at {$item}");
         }
     }
 }
