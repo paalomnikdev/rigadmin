@@ -14,7 +14,7 @@
         </thead>
         <tbody data-rigId="{{ $rig->id }}">
             @foreach($cards as $card)
-                <tr @if ($card->temperature >= $tempTreshold) class="danger" @endif>
+                <tr class="@if ($card->temperature >= $temp_treshold) danger @else info @endif">
                     <td>{{ $card->name }}</td>
                     <td>{{ $card->fan_speed }}</td>
                     <td>{{ $card->power_limit }}</td>

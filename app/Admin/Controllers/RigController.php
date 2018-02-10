@@ -28,8 +28,6 @@ class RigController
     {
         $rig = Rig::find($id);
         return \Admin::content(function (Content $content) use ($id, $rig) {
-            $cards = $rig->videocards()->get();
-            $tempTreshold = config('max_temp_treshold');
             $content->header(
                 $rig->getAttribute('name')
             );
@@ -38,7 +36,14 @@ class RigController
                 ['text' => 'Rig', 'url' => '/rig/view/' . $id]
             );
             $content->body(
-                view('card-grid', compact('rig', 'cards', 'tempTreshold'))
+                view(
+                    'card-grid',
+                    [
+                        'cards' => $rig->videocards()->get(),
+                        'rig'   => $rig,
+                        'temp_treshold' => config('max_temp_treshold'),
+                    ]
+                )
             );
         });
     }
