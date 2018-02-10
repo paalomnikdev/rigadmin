@@ -87,6 +87,7 @@ class CheckRigs extends Command
                     $item->videocards()
                         ->saveMany($cardsToAdd);
                 }
+                $item->setAttribute('active', true)->save();
                 $this->info(
                     'Finished ' . $item->getAttribute('name') . '(' . $item->getAttribute('address') . ')'
                 );
