@@ -33,8 +33,6 @@ Route::any('/register-rig', function (Request $request) {
         $rig->setAttribute('active', true);
         $rig->save();
 
-        $rig->videocards()->delete();
-
         $videocards = @json_decode($data['stats'], true);
 
         if ($videocards) {
