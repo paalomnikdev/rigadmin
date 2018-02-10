@@ -19,7 +19,7 @@ class Videocard extends Model
 
     public function rig()
     {
-        return $this->belongsTo('App\Rig');
+        return $this->belongsTo('App\Rig', 'rig_id');
     }
 
     public static function findOrCreate($rigId, $idOnRig)
