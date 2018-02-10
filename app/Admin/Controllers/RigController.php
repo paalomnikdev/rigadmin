@@ -26,11 +26,19 @@ class RigController
 
     public function view($id)
     {
-        return \Admin::content(function (Content $content) use ($id) {
-            $content->header('Rig');
+        $rig = Rig::find($id);
+        return \Admin::content(function (Content $content) use ($id, $rig) {
+            $cards = $rig->videocards()->get();
+            $tempTreshold = config('max_temp_treshold');
+            $content->header(
+                $rig->getAttribute('name')
+            );
             $content->breadcrumb(
                 ['text' => 'Rigs', 'url' => '/rig'],
                 ['text' => 'Rig', 'url' => '/rig/view/' . $id]
+            );
+            $content->body(
+                view('card-grid', compact('rig', 'cards', 'tempTreshold'))
             );
         });
     }
