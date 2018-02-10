@@ -51,6 +51,9 @@ class CheckRigs extends Command
         $httpClient = new Client();
         /** @var Rig $item */
         foreach ($rig as $item) {
+            $this->info(
+                'Checking ' . $rig->getAttribute('name') . '(' . $rig->getAttribute('address') . ')'
+            );
             try {
                 $response = $httpClient->get(
                     'http://' . $item->getAttribute('address') . '/check-alive'
@@ -66,6 +69,7 @@ class CheckRigs extends Command
                 }
 
                 if (!empty($stats['result'])) {
+                    $this->info('Found ' . sizeof($stats['result']) . ' cards.');
                     $cardsToAdd = [];
                     foreach ($stats['result'] as $cardId => $stat) {
                         $videocard = Videocard::findOrCreate($rig->getKey(), $cardId);
@@ -83,7 +87,11 @@ class CheckRigs extends Command
                     $rig->videocards()
                         ->saveMany($cardsToAdd);
                 }
+                $this->info(
+                    'Finished ' . $rig->getAttribute('name') . '(' . $rig->getAttribute('address') . ')'
+                );
             } catch (\Throwable $e) {
+                $this->error($e->getMessage());
                 $item
                     ->setAttribute('active', false)
                     ->save();
