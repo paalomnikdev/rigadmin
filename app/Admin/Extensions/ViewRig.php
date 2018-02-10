@@ -23,7 +23,7 @@ class ViewRig
     {
         return <<<SCRIPT
 $('.grid-eye-row').on('click', function() {
-    location = '/admin/rig/view/1';
+    location = '/admin/rig/view/{$this->id}';
 });
 SCRIPT;
 
