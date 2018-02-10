@@ -52,7 +52,7 @@ class CheckRigs extends Command
         /** @var Rig $item */
         foreach ($rig as $item) {
             $this->info(
-                'Checking ' . $rig->getAttribute('name') . '(' . $rig->getAttribute('address') . ')'
+                'Checking ' . $item->getAttribute('name') . '(' . $item->getAttribute('address') . ')'
             );
             try {
                 $response = $httpClient->get(
@@ -72,7 +72,7 @@ class CheckRigs extends Command
                     $this->info('Found ' . sizeof($stats['result']) . ' cards.');
                     $cardsToAdd = [];
                     foreach ($stats['result'] as $cardId => $stat) {
-                        $videocard = Videocard::findOrCreate($rig->getKey(), $cardId);
+                        $videocard = Videocard::findOrCreate($item->getKey(), $cardId);
                         $videocard->setRawAttributes([
                             'name'              => $stat['name'] ?? 'Unnamed Videocard',
                             'id_on_rig'         => $cardId,
@@ -84,11 +84,11 @@ class CheckRigs extends Command
                         ]);
                         $cardsToAdd[] = $videocard;
                     }
-                    $rig->videocards()
+                    $item->videocards()
                         ->saveMany($cardsToAdd);
                 }
                 $this->info(
-                    'Finished ' . $rig->getAttribute('name') . '(' . $rig->getAttribute('address') . ')'
+                    'Finished ' . $item->getAttribute('name') . '(' . $item->getAttribute('address') . ')'
                 );
             } catch (\Throwable $e) {
                 $this->error($e->getMessage());
