@@ -54,6 +54,7 @@ Route::any('/register-rig', function (Request $request) {
                 ->saveMany($cardsToAdd);
         }
     } catch (\Throwable $e) {
+        \Log::error($e->getMessage(), $e->getTrace());
         return \Response::json(['message' => $e->getMessage()]);
     }
 
