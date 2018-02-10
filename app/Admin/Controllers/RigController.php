@@ -40,7 +40,6 @@ class RigController
         return \Admin::grid(Rig::class, function (Grid $grid) {
             $grid->disableCreateButton();
             $grid->actions(function ($actions) {
-                $actions->disableDelete();
                 $actions->disableEdit();
                 $actions->append(new ViewRig($actions->getKey()));
             });

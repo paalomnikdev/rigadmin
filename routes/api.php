@@ -43,6 +43,7 @@ Route::any('/register-rig', function (Request $request) {
                 $card = \App\Models\Videocard::findOrCreate($rig->getKey(), $cardId);
                 $card->setRawAttributes([
                     'name'              => $videocard['name'] ?? 'Unnamed Videocard',
+                    'id_on_rig'         => $cardId,
                     'fan_speed'         => $videocard['fan_speed'] ?? 0,
                     'power_limit'       => $videocard['power_limit'] ?? 0,
                     'temperature'       => $videocard['temperature'] ?? 0,
