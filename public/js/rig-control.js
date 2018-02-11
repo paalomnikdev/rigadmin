@@ -71,7 +71,7 @@ var RigControl = {
         })
         .then(function (data) {
             toastr.success('Successfully checked');
-            jQuery.pjax.reload('#pjax-container');
+            location.reload();
         });
     }
 };
