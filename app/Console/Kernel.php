@@ -26,8 +26,8 @@ class Kernel extends ConsoleKernel
     {
          $schedule
              ->command('check:rig')
-             ->hourly()
-            ->withoutOverlapping();
+             ->everyTenMinutes()
+             ->withoutOverlapping();
     }
 
     /**

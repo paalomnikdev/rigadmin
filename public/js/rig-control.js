@@ -41,7 +41,7 @@ var RigControl = {
             });
 
 
-        jQuery.ajax({
+        return jQuery.ajax({
             type: 'post',
             url: '/admin/rig/set-config/' + self.rigId,
             dataType: 'json',
@@ -61,7 +61,7 @@ var RigControl = {
     },
 
     recheckRig: function (rigId) {
-        jQuery.ajax({
+        return jQuery.ajax({
             url: '/admin/rig/check/' + rigId,
             dataType: 'json',
             error: function () {
