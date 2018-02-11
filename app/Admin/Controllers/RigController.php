@@ -77,7 +77,8 @@ class RigController
         $data = \Request::except('_token');
         $rig = Rig::find($rigId);
         $videocard = Videocard::where('id_on_rig', $data['id'])
-                                ->where('rig_id', $rigId);
+            ->where('rig_id', $rigId)
+            ->first();
         $success = true;
         try {
             $httpClient = new \GuzzleHttp\Client();
