@@ -78,7 +78,6 @@ class RigController
         $rig = Rig::find($rigId);
         $videocard = Videocard::find($data['id']);
         $success = true;
-        $message = '';
         try {
             $httpClient = new \GuzzleHttp\Client();
             $response = $httpClient->post(
@@ -86,7 +85,8 @@ class RigController
                 $data
             );
             $result = @\GuzzleHttp\json_decode(
-                $response->getBody()->getContents()
+                $response->getBody()->getContents(),
+                true
             );
             if (!empty($result['success'])) {
                 $videocard
