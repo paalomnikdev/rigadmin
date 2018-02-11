@@ -82,7 +82,7 @@
 </div>
 <script type="text/javascript" src="{!! asset('js/rig-control.js') !!}"></script>
 <script>
-    jQuery(document).on('ready', function () {
+    jQuery(document).on('ready pjax:end', function () {
         RigControl.init({{ $rig->id }});
     });
 </script>
