@@ -55,7 +55,7 @@ class CheckRigs extends Command
                 'Checking ' . $item->getAttribute('name') . '(' . $item->getAttribute('address') . ')'
             );
             try {
-                $response = $httpClient->get(
+                $response = @$httpClient->get(
                     'http://' . $item->getAttribute('address') . '/check-alive'
                 );
 
