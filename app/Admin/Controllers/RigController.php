@@ -48,6 +48,24 @@ class RigController
         });
     }
 
+    public function check($rigId)
+    {
+        $success = true;
+        try {
+            \Artisan::call('check:rig', ['rig' => $rigId]);
+        } catch (\Throwable $e) {
+            $success = false;
+            \Log::error($e->getMessage());
+        }
+
+        return \Response::json(['success' => $success]);
+    }
+
+    public function setConfig($rigId)
+    {
+
+    }
+
     protected function grid()
     {
         return \Admin::grid(Rig::class, function (Grid $grid) {

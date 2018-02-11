@@ -40,13 +40,15 @@ Route::any('/register-rig', function (Request $request) {
             foreach ($videocards as $cardId => $videocard) {
                 $card = \App\Models\Videocard::findOrCreate($rig->getKey(), $cardId);
                 $card->setRawAttributes([
-                    'name'              => $videocard['name'] ?? 'Unnamed Videocard',
-                    'id_on_rig'         => $cardId,
-                    'fan_speed'         => $videocard['fan_speed'] ?? 0,
-                    'power_limit'       => $videocard['power_limit'] ?? 0,
-                    'temperature'       => $videocard['temperature'] ?? 0,
-                    'memory_overclock'  => $videocard['memory_overclock'] ?? 0,
-                    'core_overclock'    => $videocard['core_overclock'] ?? 0,
+                    'name'                  => $videocard['name'] ?? 'Unnamed Videocard',
+                    'id_on_rig'             => $cardId,
+                    'fan_speed'             => $videocard['fan_speed'] ?? 0,
+                    'power_limit'           => $videocard['power_limit'] ?? 0,
+                    'temperature'           => $videocard['temperature'] ?? 0,
+                    'memory_overclock'      => $videocard['memory_overclock'] ?? 0,
+                    'core_overclock'        => $videocard['core_overclock'] ?? 0,
+                    'current_memory_freq'   => $videocard['current_memory_freq'] ?? 0,
+                    'current_gpu_freq'      => $videocard['current_gpu_freq'] ?? 0,
                 ]);
                 $cardsToAdd[] = $card;
             }

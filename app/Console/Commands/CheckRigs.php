@@ -74,13 +74,15 @@ class CheckRigs extends Command
                     foreach ($stats['result'] as $cardId => $stat) {
                         $videocard = Videocard::findOrCreate($item->getKey(), $cardId);
                         $videocard->setRawAttributes([
-                            'name'              => $stat['name'] ?? 'Unnamed Videocard',
-                            'id_on_rig'         => $cardId,
-                            'fan_speed'         => $stat['fan_speed'] ?? 0,
-                            'power_limit'       => $stat['power_limit'] ?? 0,
-                            'temperature'       => $stat['temperature'] ?? 0,
-                            'memory_overclock'  => $stat['memory_overclock'] ?? 0,
-                            'core_overclock'    => $stat['core_overclock'] ?? 0,
+                            'name'                  => $stat['name'] ?? 'Unnamed Videocard',
+                            'id_on_rig'             => $cardId,
+                            'fan_speed'             => $stat['fan_speed'] ?? 0,
+                            'power_limit'           => $stat['power_limit'] ?? 0,
+                            'temperature'           => $stat['temperature'] ?? 0,
+                            'memory_overclock'      => $stat['memory_overclock'] ?? 0,
+                            'core_overclock'        => $stat['core_overclock'] ?? 0,
+                            'current_memory_freq'   => $videocard['current_memory_freq'] ?? 0,
+                            'current_gpu_freq'      => $videocard['current_gpu_freq'] ?? 0,
                         ]);
                         $cardsToAdd[] = $videocard;
                     }
