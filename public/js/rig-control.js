@@ -51,8 +51,8 @@ var RigControl = {
             }
         })
         .then(function (data) {
-            if (data.success && data.message) {
-                toastr.success(data.message);
+            if (data.success) {
+                toastr.success(data.message ? data.message : 'Saved.');
                 jQuery.pjax.reload('#pjax-container');
                 return;
             }
