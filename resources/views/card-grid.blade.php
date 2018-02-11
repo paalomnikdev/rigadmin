@@ -1,10 +1,11 @@
 <div class="container">
     <button
+            data-rigId="{{ $rig->id }}"
             data-toggle="tooltip"
             data-placement="top"
             title="Re-check rig"
             type="button"
-            class="btn btn-primary fa fa-refresh"></button>
+            class="re-check btn btn-primary fa fa-refresh"></button>
     <button
             data-toggle="tooltip"
             data-placement="top"
@@ -41,14 +42,14 @@
                     <td>
                         <input
                                 data-value="{{ $card->fan_speed }}"
-                                class="fan-speed"
+                                name="fan_speed"
                                 type="text"
                                 value="{{ $card->fan_speed }}">
                     </td>
                     <td>
                         <input
                                 data-value="{{ $card->power_limit }}"
-                                class="power-limit"
+                                name="power_limit"
                                 type="text"
                                 value="{{ $card->power_limit }}">
                     </td>
@@ -56,19 +57,19 @@
                     <td>
                         <input
                                 data-value="{{ $card->memory_overclock }}"
-                                class="memory-overclock"
+                                name="memory_overclock"
                                 type="text"
                                 value="{{ $card->memory_overclock }}">
                     </td>
                     <td>
                         <input
                                 data-value="{{ $card->core_overclock }}"
-                                class="core-overclock"
+                                name="core_overclock"
                                 type="text"
                                 value="{{ $card->core_overclock }}">
                     </td>
-                    <td></td>
-                    <td></td>
+                    <td>{{ $card->current_memory_freq }}</td>
+                    <td>{{ $card->current_gpu_freq }}</td>
                     <td>{{ $card->last_check }}</td>
                     <td>
                         <a class="set-config fa fa-check" href="javascript:void(0)"></a>
@@ -80,3 +81,8 @@
     </table>
 </div>
 <script type="text/javascript" src="{!! asset('js/rig-control.js') !!}"></script>
+<script>
+    jQuery(document).on('ready', function () {
+        RigControl.init({{ $rig->id }});
+    });
+</script>

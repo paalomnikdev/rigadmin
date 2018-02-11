@@ -11,8 +11,10 @@ namespace App\Admin\Controllers;
 
 use App\Admin\Extensions\ViewRig;
 use App\Models\Rig;
+use App\Models\Videocard;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
+use Illuminate\Support\MessageBag;
 
 class RigController
 {
@@ -27,14 +29,23 @@ class RigController
     public function view($id)
     {
         $rig = Rig::find($id);
+
         return \Admin::content(function (Content $content) use ($id, $rig) {
             $content->header(
                 $rig->getAttribute('name')
             );
+
             $content->breadcrumb(
                 ['text' => 'Rigs', 'url' => '/rig'],
                 ['text' => 'Rig', 'url' => '/rig/view/' . $id]
             );
+
+            if (!$rig->getAttribute('active')) {
+                $content->withError('Error', 'Rig is not active.');
+                return;
+            }
+
+
             $content->body(
                 view(
                     'card-grid',
@@ -55,7 +66,7 @@ class RigController
             \Artisan::call('check:rig', ['rig' => $rigId]);
         } catch (\Throwable $e) {
             $success = false;
-            \Log::error($e->getMessage());
+            \Log::error($e->getMessage(), $e->getTrace());
         }
 
         return \Response::json(['success' => $success]);
@@ -63,7 +74,39 @@ class RigController
 
     public function setConfig($rigId)
     {
+        $data = \Request::except('_token');
+        $rig = Rig::find($rigId);
+        $videocard = Videocard::find($data['id']);
+        $success = true;
+        $message = '';
+        try {
+            $httpClient = new \GuzzleHttp\Client();
+            $response = $httpClient->post(
+                'http://' . $rig->getAttribute('address') . '/gpu-control/set-config',
+                $data
+            );
+            $result = @\GuzzleHttp\json_decode(
+                $response->getBody()->getContents()
+            );
+            if (!empty($result['success'])) {
+                $videocard
+                    ->setAttribute('fan_speed', $data['fan_speed'])
+                    ->setAttribute('power_limit', $data['power_limit'])
+                    ->setAttribute('memory_overclock', $data['memory_overclock'])
+                    ->setAttribute('core_overclock', $data['core_overclock'])
+                    ->save();
+            }
+            $message = $result['message'] ?? 'Saved.';
+        } catch (\Throwable $e) {
+            $success = false;
+            $message = $e->getMessage();
+            \Log::error($message, $e->getTrace());
+        }
 
+        return \Response::json([
+            'success'   => $success,
+            'message'   => $message,
+        ]);
     }
 
     protected function grid()

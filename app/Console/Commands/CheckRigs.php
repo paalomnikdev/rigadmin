@@ -43,7 +43,7 @@ class CheckRigs extends Command
         if (!$rig) {
             $rig = Rig::all();
         } else {
-            $rig = Rig::find($rig);
+            $rig = Rig::where('id', '=', $rig);
         }
 
         $this->info('Found ' . $rig->count() . ' rig(s).Starting to check.');

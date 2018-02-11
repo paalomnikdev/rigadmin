@@ -22,8 +22,8 @@ class ViewRig
     protected function script()
     {
         return <<<SCRIPT
-$('.grid-eye-row').on('click', function() {
-    location = '/admin/rig/view/{$this->id}';
+jQuery('.grid-eye-row').on('click', function() {
+    location = '/admin/rig/view/' + jQuery(this).data('id');
 });
 SCRIPT;
 
