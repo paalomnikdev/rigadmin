@@ -82,7 +82,7 @@ class RigController
             $httpClient = new \GuzzleHttp\Client();
             $response = $httpClient->post(
                 'http://' . $rig->getAttribute('address') . '/gpu-control/set-config',
-                $data
+                ['form_params' => $data]
             );
             $result = @\GuzzleHttp\json_decode(
                 $response->getBody()->getContents(),
