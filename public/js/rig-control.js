@@ -53,7 +53,6 @@ var RigControl = {
         .then(function (data) {
             if (data.success) {
                 toastr.success(data.message ? data.message : 'Saved.');
-                jQuery.pjax.reload('#pjax-container');
                 return;
             }
 
