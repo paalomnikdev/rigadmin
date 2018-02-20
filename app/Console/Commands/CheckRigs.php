@@ -43,7 +43,7 @@ class CheckRigs extends Command
         if (!$rig) {
             $rig = Rig::all();
         } else {
-            $rig = Rig::where('id', '=', $rig);
+            $rig = [Rig::where('id', '=', $rig)];
         }
 
         $this->info('Found ' . $rig->count() . ' rig(s).Starting to check.');
@@ -55,7 +55,7 @@ class CheckRigs extends Command
                 'Checking ' . $item->getAttribute('name') . '(' . $item->getAttribute('address') . ')'
             );
             try {
-                $response = @$httpClient->get(
+                $response = $httpClient->get(
                     'http://' . $item->getAttribute('address') . '/check-alive'
                 );
 

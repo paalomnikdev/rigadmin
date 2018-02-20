@@ -14,7 +14,6 @@ use App\Models\Rig;
 use App\Models\Videocard;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
-use Illuminate\Support\MessageBag;
 
 class RigController
 {
