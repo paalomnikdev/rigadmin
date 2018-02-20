@@ -91,6 +91,7 @@ class CheckRigs extends Command
                     /** @var Videocard $card */
                     foreach ($cardsToAdd as $card) {
                         $cardData = $card->getAttributes();
+                        $cardData['rig_id'] = $item->getKey();
                         if (!empty($cardData['last_check'])) {
                             $cardData['check_time'] = $cardData['last_check'];
                             unset($cardData['last_check']);
