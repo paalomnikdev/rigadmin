@@ -28,6 +28,9 @@ class Kernel extends ConsoleKernel
              ->command('check:rig')
              ->everyTenMinutes()
              ->withoutOverlapping();
+         $schedule
+             ->command('clean:videocard-history')
+             ->daily();
     }
 
     /**

@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Models\VideocardHistory;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class CleanupCardsHistory extends Command
@@ -22,8 +24,6 @@ class CleanupCardsHistory extends Command
 
     /**
      * Create a new command instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -37,6 +37,14 @@ class CleanupCardsHistory extends Command
      */
     public function handle()
     {
-        //
+        try {
+            VideocardHistory::where(
+                'check_time',
+                '<',
+                Carbon::now()->subDays(7)->format('Y-m-d')
+            )->delete();
+        } catch (\Throwable $e) {
+            \Log::error($e->getMessage(), $e->getTrace());
+        }
     }
 }
