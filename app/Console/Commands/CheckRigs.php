@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Rig;
 use App\Models\Videocard;
+use App\Models\VideocardHistory;
 use Illuminate\Console\Command;
 use GuzzleHttp\Client;
 
@@ -86,6 +87,17 @@ class CheckRigs extends Command
                         ]);
                         $cardsToAdd[] = $videocard;
                     }
+                    $history = [];
+                    /** @var Videocard $card */
+                    foreach ($cardsToAdd as $card) {
+                        $cardData = $card->getAttributes();
+                        if (!empty($cardData['last_check'])) {
+                            $cardData['check_time'] = $cardData['last_check'];
+                            unset($cardData['last_check']);
+                        }
+                        $history[] = $cardData;
+                    }
+                    VideocardHistory::insert($history);
                     $item->videocards()
                         ->saveMany($cardsToAdd);
                 }
