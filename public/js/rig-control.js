@@ -1,5 +1,6 @@
 var RigControl = {
     rigId: 0,
+    checking: false,
     init: function (rigId) {
         var self = this;
         self.rigId = rigId
@@ -61,17 +62,24 @@ var RigControl = {
     },
 
     recheckRig: function (rigId) {
-        return jQuery.ajax({
-            url: '/admin/rig/check/' + rigId,
-            dataType: 'json',
-            error: function () {
-                toastr.error('Error! Please check logs.');
-            }
-        })
-        .then(function (data) {
-            toastr.success('Successfully checked');
-            location.reload();
-        });
+        var self = this;
+        if (!self.checking) {
+            return jQuery.ajax({
+                url: '/admin/rig/check/' + rigId,
+                dataType: 'json',
+                beforeSend: function () {
+                    self.checking = true;
+                },
+                error: function () {
+                    self.checking = false;
+                    toastr.error('Error! Please check logs.');
+                }
+            })
+                .then(function (data) {
+                    toastr.success('Successfully checked');
+                    location.reload();
+                }.bind(this));
+        }
     }
 };
 
