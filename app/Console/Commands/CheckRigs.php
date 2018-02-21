@@ -82,8 +82,6 @@ class CheckRigs extends Command
                             'temperature'           => $stat['temperature'] ?? 0,
                             'memory_overclock'      => $stat['memory_overclock'] ?? 0,
                             'core_overclock'        => $stat['core_overclock'] ?? 0,
-                            'current_memory_freq'   => $videocard['current_memory_freq'] ?? 0,
-                            'current_gpu_freq'      => $videocard['current_gpu_freq'] ?? 0,
                         ]);
                         $cardsToAdd[] = $videocard;
                     }

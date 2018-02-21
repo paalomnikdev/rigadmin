@@ -27,8 +27,6 @@
                 <th>Temperature (&deg; C)</th>
                 <th>Memory overclock (MHz)</th>
                 <th>Core overclock (MHz)</th>
-                <th>Current memory frequency (MHz)</th>
-                <th>Current core frequency (MHz)</th>
                 <th>Last check</th>
                 <th>Actions</th>
             </tr>
@@ -68,8 +66,6 @@
                                 type="text"
                                 value="{{ $card->core_overclock }}">
                     </td>
-                    <td>{{ $card->current_memory_freq }}</td>
-                    <td>{{ $card->current_gpu_freq }}</td>
                     <td>{{ $card->last_check }}</td>
                     <td>
                         <a class="set-config fa fa-check" href="javascript:void(0)"></a>
@@ -97,7 +93,6 @@
                 {
                     label: 'Highest temperature',
                     data: [@foreach($max_temps as $temp) {{ $temp }}, @endforeach],
-//                    data: [12, 19, 3, 5, 2, 3],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
