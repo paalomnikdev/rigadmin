@@ -12,6 +12,7 @@ namespace App\Admin\Controllers;
 use App\Admin\Extensions\ViewRig;
 use App\Models\Rig;
 use App\Models\Videocard;
+use App\Models\VideocardHistory;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 
@@ -44,14 +45,23 @@ class RigController
                 return;
             }
 
+            $history = VideocardHistory::where('rig_id', '=', $id)
+                ->selectRaw('MAX(temperature) AS max_temp, MIN(temperature) as min_temp, check_time')
+                ->groupBy('check_time')
+                ->get()
+                ->toArray();
+
 
             $content->body(
                 view(
                     'card-grid',
                     [
-                        'cards' => $rig->videocards()->get(),
-                        'rig'   => $rig,
+                        'cards'         => $rig->videocards()->get(),
+                        'rig'           => $rig,
                         'temp_treshold' => config('max_temp_treshold'),
+                        'dates'         => array_column($history, 'check_time'),
+                        'max_temps'     => array_column($history, 'max_temp'),
+                        'min_temps'     => array_column($history, 'min_temp'),
                     ]
                 )
             );
