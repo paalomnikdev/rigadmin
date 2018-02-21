@@ -80,7 +80,7 @@
         </tbody>
     </table>
 </div>
-<canvas id="myChart" width="400" height="400"></canvas>
+<canvas id="myChart" width="400" height="100"></canvas>
 <script type="text/javascript" src="{!! asset('js/rig-control.js') !!}"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment-with-locales.min.js"></script>
