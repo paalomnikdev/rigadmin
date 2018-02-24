@@ -86,13 +86,11 @@ class RigController
         $success = true;
         try {
             $rig = Rig::find($rigId);
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, 'http://' . $rig->getAttribute('address') . '/gpu-control/reboot');
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_USERAGENT, 'curl');
-            curl_setopt($ch, CURLOPT_TIMEOUT, 1);
-            curl_exec($ch);
-            curl_close($ch);
+            try {
+                (new \GuzzleHttp\Client())->get(
+                    'http://' . $rig->getAttribute('address') . '/gpu-control/reboot'
+                );
+            } catch (\Throwable $e) {}
         } catch (\Throwable $e) {
             $success = false;
             \Log::error($e->getMessage(), $e->getTrace());
