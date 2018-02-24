@@ -81,6 +81,26 @@ class RigController
         return \Response::json(['success' => $success]);
     }
 
+    public function reboot($rigId)
+    {
+        $success = true;
+        try {
+            $rig = Rig::find($rigId);
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, 'http://' . $rig->getAttribute('address') . '/gpu-control/reboot');
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_USERAGENT, 'curl');
+            curl_setopt($ch, CURLOPT_TIMEOUT, 1);
+            curl_exec($ch);
+            curl_close($ch);
+        } catch (\Throwable $e) {
+            $success = false;
+            \Log::error($e->getMessage(), $e->getTrace());
+        }
+
+        return \Response::json(['success' => $success]);
+    }
+
     public function setConfig($rigId)
     {
         $data = \Request::except('_token');

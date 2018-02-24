@@ -14,5 +14,6 @@ use Illuminate\Routing\Router;
     $router->get('/rig', 'RigController@index');
     $router->get('/rig/view/{id}', 'RigController@view');
     $router->get('/rig/check/{id}', 'RigController@check');
+    $router->get('/rig/reboot/{id}', 'RigController@reboot');
     $router->post('/rig/set-config/{id}', 'RigController@setConfig');
 });

@@ -7,17 +7,19 @@
             type="button"
             class="re-check btn btn-primary fa fa-refresh"></button>
     <button
+            data-rigId="{{ $rig->id }}"
             data-toggle="tooltip"
             data-placement="top"
             title="Reboot rig"
             type="button"
             class="btn btn-danger fa fa-undo"></button>
     <button
+            data-rigId="{{ $rig->id }}"
             data-toggle="tooltip"
             data-placement="top"
             title="Power off rig"
             type="button"
-            class="btn btn-danger fa fa-power-off"></button>
+            class="reboot btn btn-danger fa fa-power-off"></button>
     <table class="table">
         <thead>
             <tr>

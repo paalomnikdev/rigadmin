@@ -18,6 +18,9 @@ var RigControl = {
         jQuery('.re-check').on('click', function () {
             self.recheckRig(jQuery(this).data('rigid'));
         });
+        jQuery('.reboot').on('click', function () {
+            self.rebootRig(jQuery(this).data('rigid'));
+        });
         jQuery('.set-config').on('click', function () {
             var $row = jQuery(this)
                 .parent()
@@ -78,6 +81,27 @@ var RigControl = {
                 .then(function (data) {
                     toastr.success('Successfully checked');
                     location.reload();
+                }.bind(this));
+        }
+    },
+
+    rebootRig: function (rigId) {
+        var self = this;
+        if (!self.checking) {
+            return jQuery.ajax({
+                url: '/admin/rig/reboot/' + rigId,
+                dataType: 'json',
+                beforeSend: function () {
+                    self.checking = true;
+                },
+                error: function () {
+                    self.checking = false;
+                    toastr.error('Error! Please check logs.');
+                }
+            })
+                .then(function () {
+                    toastr.success('Successfully rebooted.');
+                    window.location.href('/admin/rig')
                 }.bind(this));
         }
     }
