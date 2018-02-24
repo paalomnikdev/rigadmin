@@ -101,7 +101,7 @@ var RigControl = {
             })
                 .then(function () {
                     toastr.success('Successfully rebooted.');
-                    window.location.href('/admin/rig')
+                    location.href('/admin/rig')
                 }.bind(this));
         }
     }
