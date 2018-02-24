@@ -47,8 +47,6 @@ Route::any('/register-rig', function (Request $request) {
                     'temperature'           => $videocard['temperature'] ?? 0,
                     'memory_overclock'      => $videocard['memory_overclock'] ?? 0,
                     'core_overclock'        => $videocard['core_overclock'] ?? 0,
-                    'current_memory_freq'   => $videocard['current_memory_freq'] ?? 0,
-                    'current_gpu_freq'      => $videocard['current_gpu_freq'] ?? 0,
                 ]);
                 $cardsToAdd[] = $card;
             }
@@ -61,5 +59,5 @@ Route::any('/register-rig', function (Request $request) {
     }
 
 
-    return \Response::json([]);
+    return \Response::json(['temp_limit' => config('max_temp_treshold')]);
 });
