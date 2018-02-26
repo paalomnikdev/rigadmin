@@ -13,7 +13,7 @@ class AddMinersTable extends Migration
      */
     public function up()
     {
-        \Schema::table('miners', function (Blueprint $table) {
+        \Schema::create('miners', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->string('dir');

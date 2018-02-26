@@ -13,7 +13,7 @@ class AddPoolsTable extends Migration
      */
     public function up()
     {
-        \Schema::table('pools', function (Blueprint $table) {
+        \Schema::create('pools', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->string('address');

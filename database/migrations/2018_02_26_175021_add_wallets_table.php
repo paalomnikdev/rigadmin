@@ -13,7 +13,7 @@ class AddWalletsTable extends Migration
      */
     public function up()
     {
-        \Schema::table('wallets', function (Blueprint $table) {
+        \Schema::create('wallets', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->string('address');
