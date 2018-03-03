@@ -77,11 +77,41 @@
             @endforeach
         </tbody>
     </table>
+    <hr/>
+    <h1>Mining</h1>
+    <form class="miner-control-form">
+        <label for="miner">Miner</label>
+        <select id="miner" class="selectpicker">
+            <option selected disabled></option>
+            @foreach($miners as $miner)
+                <option value="{{ $miner->id }}">{{ $miner->name }}</option>
+            @endforeach
+        </select>
+        <label for="pool">Pool</label>
+        <select id="pool" class="selectpicker">
+            <option selected disabled></option>
+            @foreach($pools as $pool)
+                <option value="{{ $pool->id }}">{{ $pool->name }}</option>
+            @endforeach
+        </select>
+        <label for="wallet">Wallet</label>
+        <select id="wallet" class="selectpicker">
+            <option selected disabled></option>
+            @foreach($wallets as $wallet)
+                <option value="{{ $wallet->id }}">{{ $wallet->name }}</option>
+            @endforeach
+        </select>
+        <button type="button" class="btn btn-primary">Start</button>
+    </form>
+
+    <hr/>
+    <canvas id="myChart" width="400" height="100"></canvas>
 </div>
-<canvas id="myChart" width="400" height="100"></canvas>
 <script type="text/javascript" src="{!! asset('js/rig-control.js') !!}"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment-with-locales.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
 <script>
     jQuery(document).on('ready pjax:end', function () {
         RigControl.init({{ $rig->id }});

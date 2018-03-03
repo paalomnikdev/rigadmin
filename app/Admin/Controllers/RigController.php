@@ -10,9 +10,12 @@ namespace App\Admin\Controllers;
 
 
 use App\Admin\Extensions\ViewRig;
+use App\Models\Miner;
+use App\Models\Pool;
 use App\Models\Rig;
 use App\Models\Videocard;
 use App\Models\VideocardHistory;
+use App\Models\Wallet;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 
@@ -62,6 +65,9 @@ class RigController
                         'dates'         => array_column($history, 'check_time'),
                         'max_temps'     => array_column($history, 'max_temp'),
                         'min_temps'     => array_column($history, 'min_temp'),
+                        'miners'        => Miner::all(),
+                        'pools'         => Pool::all(),
+                        'wallets'       => Wallet::all(),
                     ]
                 )
             );
