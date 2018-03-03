@@ -144,6 +144,7 @@ class RigController
             $grid->disableCreateButton();
             $grid->actions(function ($actions) {
                 $actions->disableEdit();
+                $actions->disableDelete();
                 $actions->append(new ViewRig($actions->getKey()));
             });
             $grid->tools(function ($tools) {
