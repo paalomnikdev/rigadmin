@@ -17,6 +17,7 @@ class Currency extends Model
     protected $fillable = [
         'name',
         'symbol',
+        'secondary',
     ];
 
     public function __toString()

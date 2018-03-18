@@ -66,8 +66,6 @@ class RigController
                         'max_temps'     => array_column($history, 'max_temp'),
                         'min_temps'     => array_column($history, 'min_temp'),
                         'miners'        => Miner::all(),
-                        'pools'         => Pool::all(),
-                        'wallets'       => Wallet::all(),
                     ]
                 )
             );

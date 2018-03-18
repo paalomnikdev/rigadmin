@@ -84,23 +84,11 @@
         <select id="miner" class="selectpicker">
             <option selected disabled></option>
             @foreach($miners as $miner)
-                <option value="{{ $miner->id }}">{{ $miner->name }}</option>
+                <option @if($miner->id == $rig->current_miner) selected @endif value="{{ $miner->id }}">{{ $miner->name }}</option>
             @endforeach
         </select>
-        <label for="pool">Pool</label>
-        <select id="pool" class="selectpicker">
-            <option selected disabled></option>
-            @foreach($pools as $pool)
-                <option value="{{ $pool->id }}">{{ $pool->name }}</option>
-            @endforeach
-        </select>
-        <label for="wallet">Wallet</label>
-        <select id="wallet" class="selectpicker">
-            <option selected disabled></option>
-            @foreach($wallets as $wallet)
-                <option value="{{ $wallet->id }}">{{ $wallet->name }}</option>
-            @endforeach
-        </select>
+        <label for="miner-command">Miner command</label>
+        <input value="{{ $rig->miner_command }}" style="width: 50%" id="miner-command" type="text">
         <button type="button" class="btn btn-primary">Start</button>
     </form>
 

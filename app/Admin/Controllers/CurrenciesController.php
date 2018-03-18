@@ -50,6 +50,7 @@ class CurrenciesController extends Controller
         Currency::create(request()->only([
             'name',
             'symbol',
+            'secondary',
         ]))->save();
 
         return redirect('admin/currencies');
@@ -79,6 +80,9 @@ class CurrenciesController extends Controller
         return \Admin::grid(Currency::class, function (Grid $grid) {
             $grid->column('name');
             $grid->column('symbol');
+            $grid->secondary('Secondary?')->display(function ($secondary) {
+                return $secondary ? 'yes' : 'no';
+            });
         });
     }
 
@@ -87,6 +91,7 @@ class CurrenciesController extends Controller
         return \Admin::form(Currency::class, function (Form $form) {
             $form->text('name', 'Name')->rules(['required']);
             $form->text('symbol', 'Address')->rules(['required']);
+            $form->switch('secondary', 'Secondary?')->rules(['required']);
         });
     }
 }
