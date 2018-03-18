@@ -16,7 +16,12 @@ class Rig extends Model
 
     public function videocards()
     {
-        return $this->hasMany('App\Models\Videocard');
+        return $this->hasMany(Videocard::class);
+    }
+
+    public function miner()
+    {
+        return $this->belongsTo(Miner::class);
     }
 
     public static function findOrCreate($ip)
