@@ -91,7 +91,10 @@
         <input value="{{ $rig->miner_command }}" style="width: 50%;height: 32px" id="miner-command" type="text">
         <button id="start-miner" type="button" class="btn btn-primary">Start</button>
     </form>
-
+    <hr/>
+    @if(!empty($miner_stats_url)):
+        <iframe style="width: 100%;height: 200px" src="{{ $miner_stats_url }}" frameborder="0"></iframe>
+    @endif
     <hr/>
     <canvas id="myChart" width="400" height="100"></canvas>
 </div>

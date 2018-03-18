@@ -21,7 +21,7 @@ class Rig extends Model
 
     public function miner()
     {
-        return $this->belongsTo(Miner::class);
+        return $this->belongsTo(Miner::class, 'current_miner');
     }
 
     public static function findOrCreate($ip)

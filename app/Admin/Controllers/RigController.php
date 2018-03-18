@@ -55,20 +55,26 @@ class RigController
                 ->get()
                 ->toArray();
 
+            $params = [
+                'cards'         => $rig->videocards()->get(),
+                'rig'           => $rig,
+                'temp_treshold' => config('max_temp_treshold'),
+                'dates'         => array_column($history, 'check_time'),
+                'max_temps'     => array_column($history, 'max_temp'),
+                'min_temps'     => array_column($history, 'min_temp'),
+                'miners'        => Miner::all(),
+            ];
+
+            if ($miner = $rig->miner()->first()) {
+                $params['miner_stats_url'] = str_replace(
+                    '{address}',
+                    $rig->getAttribute('address'),
+                    $miner->getAttribute('api_url')
+                );
+            }
 
             $content->body(
-                view(
-                    'card-grid',
-                    [
-                        'cards'         => $rig->videocards()->get(),
-                        'rig'           => $rig,
-                        'temp_treshold' => config('max_temp_treshold'),
-                        'dates'         => array_column($history, 'check_time'),
-                        'max_temps'     => array_column($history, 'max_temp'),
-                        'min_temps'     => array_column($history, 'min_temp'),
-                        'miners'        => Miner::all(),
-                    ]
-                )
+                view('card-grid', $params)
             );
         });
     }
