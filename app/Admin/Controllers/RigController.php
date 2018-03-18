@@ -18,6 +18,7 @@ use App\Models\VideocardHistory;
 use App\Models\Wallet;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
+use GuzzleHttp\Client;
 
 class RigController
 {
@@ -140,6 +141,38 @@ class RigController
             'success'   => $success,
             'message'   => $message,
         ]);
+    }
+
+    public function miner($rigId)
+    {
+        try {
+            $miner = Miner::findOrFail(request('miner'));
+            /** @var Rig $rig */
+            $rig = Rig::find($rigId);
+            $command = request('miner_command');
+            $rig
+                ->setAttribute('miner_command', $command)
+                ->setAttribute('current_miner', request('miner'))
+                ->save();
+
+            $client = new Client();
+            $client->post(
+                "http://{$rig->getAttribute('address')}/miner",
+                ['form_params' => [
+                    'miner_path'    => "{$miner->getAttribute('dir')}/{$miner->getAttribute('binary')}",
+                    'command'       => "{$command} {$miner->getAttribute('api_param')}"
+                ]]
+            );
+            return \Response::json([
+                'success'   => true,
+                'message'   => 'Miner settings applied.',
+            ]);
+        } catch (\Throwable $e) {
+            return \Response::json([
+                'success'   => false,
+                'message'   => 'System error',
+            ]);
+        }
     }
 
     protected function grid()

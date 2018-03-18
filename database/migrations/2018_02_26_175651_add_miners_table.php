@@ -23,8 +23,8 @@ class AddMinersTable extends Migration
 
         \DB::table('miners')
             ->insert([
-                ['name' => 'EWBF', 'dir' => 'zecminer', 'binary' => './miner'],
-                ['name' => 'Claymore', 'dir' => 'claymore_dual_11', 'binary' => './ethdcrminer64']
+                ['name' => 'EWBF', 'dir' => 'zecminer', 'binary' => 'miner'],
+                ['name' => 'Claymore', 'dir' => 'claymore_dual_11', 'binary' => 'ethdcrminer64']
             ]);
     }
 

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "cd30fdd7334d15bd45985a4e22fe2bdb",
+    "content-hash": "b8fb118ca177be20f5510ef8ac430cd4",
     "packages": [
         {
             "name": "barryvdh/laravel-ide-helper",
@@ -127,6 +127,46 @@
                 }
             ],
             "time": "2016-06-13T19:28:20+00:00"
+        },
+        {
+            "name": "czpechy/claymore-api",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/czPechy/ClaymoreJsonPHP.git",
+                "reference": "1a3ed02bb1e544450fcf7b1eb330a61911efa6c6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/czPechy/ClaymoreJsonPHP/zipball/1a3ed02bb1e544450fcf7b1eb330a61911efa6c6",
+                "reference": "1a3ed02bb1e544450fcf7b1eb330a61911efa6c6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "czPechy\\Claymore\\": "src/"
+                },
+                "files": [
+                    "src/exceptions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Martin Pecha",
+                    "email": "martin@pecha.pro"
+                }
+            ],
+            "description": "Get your miner stats from Claymore Dual Miner",
+            "homepage": "https://github.com/czPechy/ClaymoreJsonPHP",
+            "time": "2018-01-18T18:00:06+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",

@@ -3,7 +3,7 @@ var RigControl = {
     checking: false,
     init: function (rigId) {
         var self = this;
-        self.rigId = rigId
+        self.rigId = rigId;
         jQuery('.reset-form').on('click', function () {
             jQuery(this)
                 .parent()
@@ -14,6 +14,9 @@ var RigControl = {
                         jQuery(this).data('value')
                     );
                 });
+        });
+        jQuery('#start-miner').on('click', function () {
+            self.startMiner(self.rigId);
         });
         jQuery('.re-check').on('click', function () {
             self.recheckRig(jQuery(this).data('rigid'));
@@ -29,6 +32,29 @@ var RigControl = {
                 jQuery(this).parent().parent().data('cardid'),
                 $row
             );
+        });
+    },
+
+    startMiner: function () {
+        var self = this;
+        jQuery.ajax({
+            type: 'post',
+            url: '/admin/rig/miner/' + self.rigId,
+            dataType: 'json',
+            data: {
+                _token: LA.token,
+                miner_command: jQuery('#miner-command').val(),
+                miner: jQuery('#miner').val()
+            },
+            success: function (data) {
+                if (data.success) {
+                    toastr.success(data.message ? data.message : 'Miner saved.');
+                }
+            },
+
+            error: function () {
+                toastr.error('System error.');
+            }
         });
     },
 

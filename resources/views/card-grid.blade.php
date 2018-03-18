@@ -88,8 +88,8 @@
             @endforeach
         </select>
         <label for="miner-command">Miner command</label>
-        <input value="{{ $rig->miner_command }}" style="width: 50%" id="miner-command" type="text">
-        <button type="button" class="btn btn-primary">Start</button>
+        <input value="{{ $rig->miner_command }}" style="width: 50%;height: 32px" id="miner-command" type="text">
+        <button id="start-miner" type="button" class="btn btn-primary">Start</button>
     </form>
 
     <hr/>
