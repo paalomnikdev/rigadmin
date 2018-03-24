@@ -11,11 +11,9 @@ namespace App\Admin\Controllers;
 
 use App\Admin\Extensions\ViewRig;
 use App\Models\Miner;
-use App\Models\Pool;
 use App\Models\Rig;
 use App\Models\Videocard;
 use App\Models\VideocardHistory;
-use App\Models\Wallet;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use GuzzleHttp\Client;
@@ -28,6 +26,25 @@ class RigController
             $content->header('Rig control');
             $content->body($this->grid());
         });
+    }
+
+    public function delete($id)
+    {
+        $response = [
+            'status'    => true,
+            'message'   => 'Deleted.'
+        ];
+        try {
+            Rig::destroy(explode(',', $id));
+        } catch (\Throwable $e) {
+            \Log::error($e->getMessage(), $e->getTrace());
+            $response = [
+                'status'    => false,
+                'message'   => 'Error.'
+            ];
+        }
+
+        return \Response::json($response);
     }
 
     public function view($id)
@@ -66,11 +83,23 @@ class RigController
             ];
 
             if ($miner = $rig->miner()->first()) {
-                $params['miner_stats_url'] = str_replace(
+                $params['current_miner_name'] = $miner->getAttribute('name');
+                $rigAddress = str_replace(
                     '{address}',
                     $rig->getAttribute('address'),
                     $miner->getAttribute('api_url')
                 );
+                $stats = null;
+                switch ($miner->getAttribute('name')) {
+                    case 'EWBF':
+                        $stats = @file_get_contents($rigAddress);
+                        break;
+                    case 'Claymore':
+                        preg_match("~\{.+\}~", @file_get_contents($rigAddress), $stats);
+                        $stats = @json_encode(array_pop($stats));
+                        break;
+                }
+                $params['miner_stats'] = $stats;
             }
 
             $content->body(
@@ -187,7 +216,6 @@ class RigController
             $grid->disableCreateButton();
             $grid->actions(function ($actions) {
                 $actions->disableEdit();
-                $actions->disableDelete();
                 $actions->append(new ViewRig($actions->getKey()));
             });
             $grid->tools(function ($tools) {

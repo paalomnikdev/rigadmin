@@ -92,8 +92,8 @@
         <button id="start-miner" type="button" class="btn btn-primary">Start</button>
     </form>
     <hr/>
-    @if(!empty($miner_stats_url)):
-        <iframe style="width: 100%;height: 350px" src="{{ $miner_stats_url }}" frameborder="0"></iframe>
+    @if(!empty($miner_stats) && !empty($current_miner_name))
+        @include($current_miner_name, ['stats' => $miner_stats])
     @endif
     <hr/>
     <canvas id="myChart" width="400" height="100"></canvas>

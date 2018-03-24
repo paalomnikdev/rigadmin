@@ -22,7 +22,7 @@ class AddApiColumn extends Migration
             ->where('name', '=', 'EWBF')
             ->update([
                 'api_param' => '--api 0.0.0.0:42000',
-                'api_url'   => 'http://{address}:42000',
+                'api_url'   => 'http://{address}:42000/getstat',
             ]);
 
         \DB::table('miners')

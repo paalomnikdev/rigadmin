@@ -18,19 +18,19 @@ use Illuminate\Routing\Router;
     $router->get('/rig/reboot/{id}', 'RigController@reboot');
     $router->post('/rig/set-config/{id}', 'RigController@setConfig');
     $router->post('/rig/miner/{id}', 'RigController@miner');
-    $router->get('/wallets', 'WalletsController@index');
-    $router->post('/wallets', 'WalletsController@new');
-    $router->post('/wallets/{id}', 'WalletsController@update');
-    $router->delete('/wallets/{id}', 'WalletsController@delete');
-    $router->get('/wallets/{id}/edit', 'WalletsController@editForm');
-    $router->get('/wallets/create', 'WalletsController@create');
-    $router->get('/pools', 'PoolsController@index');
-    $router->get('/pools/create', 'PoolsController@create');
-    $router->post('/pools', 'PoolsController@new');
-    $router->get('/pools/{id}/edit', 'PoolsController@editForm');
-    $router->post('/pools/{id}', 'PoolsController@update');
-
-    $router->resources([
-        'currencies'    => 'CurrenciesController',
-    ]);
+//    $router->get('/wallets', 'WalletsController@index');
+//    $router->post('/wallets', 'WalletsController@new');
+//    $router->post('/wallets/{id}', 'WalletsController@update');
+//    $router->delete('/wallets/{id}', 'WalletsController@delete');
+//    $router->get('/wallets/{id}/edit', 'WalletsController@editForm');
+//    $router->get('/wallets/create', 'WalletsController@create');
+//    $router->get('/pools', 'PoolsController@index');
+//    $router->get('/pools/create', 'PoolsController@create');
+//    $router->post('/pools', 'PoolsController@new');
+//    $router->get('/pools/{id}/edit', 'PoolsController@editForm');
+//    $router->post('/pools/{id}', 'PoolsController@update');
+//
+//    $router->resources([
+//        'currencies'    => 'CurrenciesController',
+//    ]);
 });
