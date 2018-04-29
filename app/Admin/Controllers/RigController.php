@@ -201,7 +201,7 @@ class RigController
             $miner = Miner::findOrFail(request('miner'));
             /** @var Rig $rig */
             $rig = Rig::find($rigId);
-            $command = MinerCommand::where(request('miner_command'))->getAttribute('command');
+            $command = MinerCommand::where(request('miner_command'))->getKey();
             $rig
                 ->setAttribute('miner_command', $command)
                 ->setAttribute('current_miner', request('miner'))
@@ -212,7 +212,7 @@ class RigController
                 "http://{$rig->getAttribute('address')}/miner",
                 ['form_params' => [
                     'miner_path'    => "{$miner->getAttribute('dir')}/{$miner->getAttribute('binary')}",
-                    'command'       => "{$command} {$miner->getAttribute('api_param')}"
+                    'command'       => "{$command->getAttribute('command')} {$miner->getAttribute('api_param')}"
                 ]]
             );
             return \Response::json([
