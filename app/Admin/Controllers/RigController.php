@@ -201,7 +201,7 @@ class RigController
             $miner = Miner::findOrFail(request('miner'));
             /** @var Rig $rig */
             $rig = Rig::find($rigId);
-            $command = MinerCommand::where(request('miner_command'));
+            $command = MinerCommand::find(request('miner_command'));
             $rig
                 ->setAttribute('miner_command', $command->getKey())
                 ->setAttribute('current_miner', request('miner'))
