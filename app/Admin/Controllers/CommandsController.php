@@ -9,20 +9,22 @@
 namespace App\Admin\Controllers;
 
 use App\Models\Currency;
+use App\Models\Miner;
+use App\Models\MinerCommand;
 use Encore\Admin\Controllers\ModelForm;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 
-class CurrenciesController extends Controller
+class CommandsController extends Controller
 {
     use ModelForm;
 
     public function index()
     {
         return \Admin::content(function (Content $content) {
-            $content->header('Currencies');
+            $content->header('Commands');
             $content->body($this->grid());
         });
     }
@@ -30,7 +32,7 @@ class CurrenciesController extends Controller
     public function create()
     {
         return \Admin::content(function (Content $content) {
-            $content->header('Currencies');
+            $content->header('Commands');
             $content->description('new');
             $content->body($this->form());
         });
@@ -47,13 +49,13 @@ class CurrenciesController extends Controller
 
     public function store()
     {
-        Currency::create(request()->only([
-            'name',
-            'symbol',
-            'secondary',
+        MinerCommand::create(request()->only([
+            'title',
+            'command',
+            'miner_id',
         ]))->save();
 
-        return redirect('admin/currencies');
+        return redirect('admin/commands');
     }
 
     public function destroy($id)
@@ -63,7 +65,7 @@ class CurrenciesController extends Controller
             'message'   => 'Deleted.'
         ];
         try {
-            Currency::destroy(explode(',', $id));
+            MinerCommand::destroy(explode(',', $id));
         } catch (\Throwable $e) {
             \Log::error($e->getMessage(), $e->getTrace());
             $response = [
@@ -77,21 +79,24 @@ class CurrenciesController extends Controller
 
     protected function grid()
     {
-        return \Admin::grid(Currency::class, function (Grid $grid) {
-            $grid->column('name');
-            $grid->column('symbol');
-            $grid->secondary('Secondary?')->display(function ($secondary) {
-                return $secondary ? 'yes' : 'no';
-            });
+        return \Admin::grid(MinerCommand::class, function (Grid $grid) {
+            $grid->column('title');
+            $grid->column('command');
+            $grid->column('miner.name', 'For miner');
         });
     }
 
     protected function form()
     {
-        return \Admin::form(Currency::class, function (Form $form) {
-            $form->text('name', 'Name')->rules(['required']);
-            $form->text('symbol', 'Address')->rules(['required']);
-            $form->switch('secondary', 'Secondary?')->rules(['required']);
+        return \Admin::form(MinerCommand::class, function (Form $form) {
+            $form->text('title', 'Title')->rules(['required']);
+            $form->text('command', 'Command')->rules(['required']);
+            $miners = Miner::all();
+            $minerOptions = [];
+            foreach ($miners as $miner) {
+                $minerOptions[$miner->getKey()] = $miner->getAttribute('name');
+            }
+            $form->select('miner_id', 'For miner')->options($minerOptions);
         });
     }
 }

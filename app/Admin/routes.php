@@ -30,7 +30,7 @@ use Illuminate\Routing\Router;
 //    $router->get('/pools/{id}/edit', 'PoolsController@editForm');
 //    $router->post('/pools/{id}', 'PoolsController@update');
 //
-//    $router->resources([
-//        'currencies'    => 'CurrenciesController',
-//    ]);
+    $router->resources([
+        'commands'    => 'CommandsController',
+    ]);
 });

@@ -11,6 +11,7 @@ namespace App\Admin\Controllers;
 
 use App\Admin\Extensions\ViewRig;
 use App\Models\Miner;
+use App\Models\MinerCommand;
 use App\Models\Rig;
 use App\Models\Videocard;
 use App\Models\VideocardHistory;
@@ -50,8 +51,10 @@ class RigController
     public function view($id)
     {
         $rig = Rig::find($id);
+        $commands = MinerCommand::all();
+        $miners = Miner::all();
 
-        return \Admin::content(function (Content $content) use ($id, $rig) {
+        return \Admin::content(function (Content $content) use ($id, $rig, $commands, $miners) {
             $content->header(
                 $rig->getAttribute('name')
             );
@@ -66,6 +69,19 @@ class RigController
                 return;
             }
 
+            $commandOptions = [];
+
+            foreach ($miners as $miner) {
+                $commandOptions[$miner->getKey()] = [];
+            }
+
+            foreach ($commands as $command) {
+                $commandOptions[$command->getAttribute('miner_id')][$command->getKey()] = [
+                    'title'     => $command->getAttribute('title'),
+                    'command'   => $command->getAttribute('command'),
+                ];
+            }
+
             $history = VideocardHistory::where('rig_id', '=', $id)
                 ->selectRaw('MAX(temperature) AS max_temp, MIN(temperature) as min_temp, check_time')
                 ->groupBy('check_time')
@@ -73,13 +89,14 @@ class RigController
                 ->toArray();
 
             $params = [
-                'cards'         => $rig->videocards()->get(),
-                'rig'           => $rig,
-                'temp_treshold' => config('max_temp_treshold'),
-                'dates'         => array_column($history, 'check_time'),
-                'max_temps'     => array_column($history, 'max_temp'),
-                'min_temps'     => array_column($history, 'min_temp'),
-                'miners'        => Miner::all(),
+                'cards'             => $rig->videocards()->get(),
+                'rig'               => $rig,
+                'temp_treshold'     => config('max_temp_treshold'),
+                'dates'             => array_column($history, 'check_time'),
+                'max_temps'         => array_column($history, 'max_temp'),
+                'min_temps'         => array_column($history, 'min_temp'),
+                'miners'            => $miners,
+                'command_options'   => @json_encode($commandOptions),
             ];
 
             if ($miner = $rig->miner()->first()) {
@@ -184,7 +201,7 @@ class RigController
             $miner = Miner::findOrFail(request('miner'));
             /** @var Rig $rig */
             $rig = Rig::find($rigId);
-            $command = request('miner_command');
+            $command = MinerCommand::where(request('miner_command'))->getAttribute('command');
             $rig
                 ->setAttribute('miner_command', $command)
                 ->setAttribute('current_miner', request('miner'))
@@ -200,7 +217,7 @@ class RigController
             );
             return \Response::json([
                 'success'   => true,
-                'message'   => 'Miner settings applied.',
+                'message'   => 'Miner settings will be applied in one minute.',
             ]);
         } catch (\Throwable $e) {
             return \Response::json([

@@ -1,9 +1,14 @@
 var RigControl = {
     rigId: 0,
+    minerOptions: [],
+    minerCommand: null,
     checking: false,
-    init: function (rigId) {
+    init: function (rigId, minerOptions, minerCommand) {
         var self = this;
         self.rigId = rigId;
+        self.minerOptions = minerOptions;
+        self.minerCommand = minerCommand;
+        self.initCommandDropdown();
         jQuery('.reset-form').on('click', function () {
             jQuery(this)
                 .parent()
@@ -33,10 +38,55 @@ var RigControl = {
                 $row
             );
         });
+        jQuery('#miner-command').on('change', function () {
+            let $preview = jQuery('#preview-command');
+            $preview.attr('disabled', false);
+            $preview.data('content', self.minerOptions[jQuery('#miner').val()][jQuery(this).val()]['command'])
+        });
+        jQuery('#miner').on('change', function () {
+            self.fillOptions(jQuery(this).val());
+        });
+    },
+
+    initCommandDropdown: function () {
+        let $miner = jQuery('#miner');
+        if ($miner.val()) {
+            this.fillOptions($miner.val());
+        }
+        jQuery('#preview-command').on('click', function (e) {
+            e.preventDefault();
+            jQuery(this).simplePopup({
+                type: 'data',
+                escapeKey: true,
+                fadeInDuration: 1.0
+            });
+        });
+    },
+
+    fillOptions: function (minerId) {
+        let $commandList = jQuery('#miner-command');
+        $commandList.find('option:gt(0)').remove();
+        if (this.minerOptions[minerId]) {
+            jQuery.each(this.minerOptions[minerId], (key, value) => {
+                let current = value.command == this.minerCommand;
+                $commandList.append(jQuery("<option></option>")
+                .attr("value", key)
+                .attr('selected', current)
+                .text(value.title));
+
+                if (current) {
+                    let $previewButton = jQuery('#preview-command');
+                    $previewButton.attr('disabled', false);
+                    $previewButton.data('content', value.command)
+                }
+            });
+        }
+        $commandList.trigger('change');
+        $commandList.selectpicker('refresh');
     },
 
     startMiner: function () {
-        var self = this;
+        let self = this;
         jQuery.ajax({
             type: 'post',
             url: '/admin/rig/miner/' + self.rigId,
@@ -50,6 +100,7 @@ var RigControl = {
                 if (data.success) {
                     toastr.success(data.message ? data.message : 'Miner saved.');
                 }
+                setTimeout(() => {location.reload()}, 60000)
             },
 
             error: function () {

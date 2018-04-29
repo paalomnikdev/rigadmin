@@ -10,4 +10,9 @@ class Miner extends Model
     {
         return $this->hasMany(Rig::class, 'current_miner');
     }
+
+    public function commands()
+    {
+        return $this->hasMany(MinerCommand::class, 'miner_id');
+    }
 }

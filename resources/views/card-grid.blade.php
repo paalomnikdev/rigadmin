@@ -88,7 +88,14 @@
             @endforeach
         </select>
         <label for="miner-command">Miner command</label>
-        <input value="{{ $rig->miner_command }}" style="width: 50%;height: 32px" id="miner-command" type="text">
+        <select id="miner-command" class="selectpicker">
+            <option selected disabled></option>
+        </select>
+        <button
+                disabled
+                id="preview-command"
+                type="button"
+                class="btn btn-warning">Preview command</button>
         <button id="start-miner" type="button" class="btn btn-primary">Start</button>
     </form>
     <hr/>
@@ -98,14 +105,20 @@
     <hr/>
     <canvas id="myChart" width="400" height="100"></canvas>
 </div>
+<script type="text/javascript" src="{!! asset('js/simple-popup.min.js') !!}"></script>
 <script type="text/javascript" src="{!! asset('js/rig-control.js') !!}"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment-with-locales.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="{!! asset('css/simple-popup.min.css') !!}">
 <script>
     jQuery(document).on('ready pjax:end', function () {
-        RigControl.init({{ $rig->id }});
+        RigControl.init(
+            {{ $rig->id }},
+            {!! $command_options !!},
+            {{ $rig->miner_command }}
+        );
     });
     var ctx = document.getElementById("myChart").getContext('2d');
     var myChart = new Chart(ctx, {
@@ -137,7 +150,6 @@
                 {
                     label: 'Lowest temperature',
                     data: [@foreach($min_temps as $temp) {{ $temp }}, @endforeach],
-//                    data: [11, 18, 2, 4, 1, 2],
                     backgroundColor: [
                         'rgba(0, 0, 255, 0.2)',
                         'rgba(0, 0, 255, 0.2)',
