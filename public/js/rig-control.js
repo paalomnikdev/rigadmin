@@ -41,7 +41,12 @@ var RigControl = {
         jQuery('#miner-command').on('change', function () {
             let $preview = jQuery('#preview-command');
             $preview.attr('disabled', false);
-            $preview.data('content', self.minerOptions[jQuery('#miner').val()][jQuery(this).val()]['command'])
+            let command = self.minerOptions[jQuery('#miner').val()][jQuery(this).val()].command;
+            if (command) {
+                $preview.data('content', command);
+            } else {
+                $preview.data('content', ' ');
+            }
         });
         jQuery('#miner').on('change', function () {
             self.fillOptions(jQuery(this).val());
