@@ -40,12 +40,10 @@ var RigControl = {
         });
         jQuery('#miner-command').on('change', function () {
             let $preview = jQuery('#preview-command');
+            let commandId = jQuery(this).val();
             $preview.attr('disabled', false);
-            let command = self.minerOptions[jQuery('#miner').val()][jQuery(this).val()].command;
-            if (command) {
-                $preview.data('content', command);
-            } else {
-                $preview.data('content', ' ');
+            if (commandId) {
+                $preview.data('content', self.minerOptions[jQuery('#miner').val()][commandId]['command']);
             }
         });
         jQuery('#miner').on('change', function () {
