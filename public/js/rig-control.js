@@ -71,7 +71,7 @@ var RigControl = {
         $commandList.find('option:gt(0)').remove();
         if (this.minerOptions[minerId]) {
             jQuery.each(this.minerOptions[minerId], (key, value) => {
-                let current = value.command == this.minerCommand;
+                let current = key == this.minerCommand;
                 $commandList.append(jQuery("<option></option>")
                 .attr("value", key)
                 .attr('selected', current)
