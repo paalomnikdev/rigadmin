@@ -100,7 +100,7 @@ var RigControl = {
                 if (data.success) {
                     toastr.success(data.message ? data.message : 'Miner saved.');
                 }
-                setTimeout(() => {location.reload()}, 60000)
+                setTimeout(() => {location.reload()}, 62000)
             },
 
             error: function () {
